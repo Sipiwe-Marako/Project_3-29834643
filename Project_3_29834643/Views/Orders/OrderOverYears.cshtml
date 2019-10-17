@@ -1,0 +1,150 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Sales over time Analysis</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Charts</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script>
+         function dynamicColors() {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgba(" + r + "," + g + "," + b + ", 0.5)";
+        }
+        function poolColors(a) {
+    var pool = [];
+    for(i = 0; i < a; i++) {
+        pool.push(dynamicColors());
+    }
+    return pool;
+}
+
+         var jsTotals = @Html.Raw(ViewBag.JsTotals);
+
+        var barChartData =
+            {
+                labels: @Html.Raw(ViewBag.TheYears),
+                datasets: [{
+                    label: 'SuperStore Orders',
+                    backgroundColor: poolColors(jsTotals.length),
+                    
+
+                    borderWidth: 2,
+                    data: jsTotals
+                }]
+        };
+       
+        var jscateg = @Html.Raw(ViewBag.jsonCategories);
+        var jscateg1 = @Html.Raw(ViewBag.jsonCategories1);
+        var jscateg2 = @Html.Raw(ViewBag.jsonCategories2);
+        var bar2ChartData =
+        {
+            labels: @Html.Raw(ViewBag.TheYears),
+            datasets: [{
+                
+                    label: 'Technology',
+                     backgroundColor: [
+                        "#f990a7",
+                        "#f990a7",
+                        "#f990a7",
+                        "#f990a7",
+                        "#f990a7",
+                    ],
+                    
+                    borderWidth: 2,
+                    data: jscateg
+                },
+                {
+                    label: 'Office Supplies',
+                     backgroundColor: [
+                        "#aad2ed",
+                        "#aad2ed",
+                       "#aad2ed",
+                       "#aad2ed",
+                        "#aad2ed",
+                    ],
+                    
+
+                    borderWidth: 2,
+                    data: @Html.Raw(ViewBag.jsonCategories1),
+                },
+                {
+                    label: 'Furniture',
+                     backgroundColor: [
+                        "#9966FF",
+                        "#9966FF",
+                        "#9966FF",
+                        "#9966FF",
+                        "#9966FF",
+                    ],
+                   
+
+                    borderWidth: 2,
+                    data: @Html.Raw(ViewBag.jsonCategories2),
+                }
+
+            ]
+        };
+
+            window.onload = function () {
+                var ctx1 = document.getElementById("barcanvas").getContext("2d");
+                window.myBar = new Chart(ctx1,
+                    {
+                        type: 'bar',
+                        data: barChartData,
+                        options:
+                            {
+                                title:
+                                {
+                                    display: true,
+                                    text: "SuperStore Orders 2012-2015"
+                                },
+                                responsive: true,
+                                maintainAspectRatio: true
+                            }
+
+                    });
+                var bchart = document.getElementById("barcanvas1").getContext("2d");
+                window.myBar = new Chart(bchart,
+                    {
+                        type: 'bar',
+                        data: bar2ChartData,
+                        options:
+                            {
+                                title:
+                                {
+                                    display: true,
+                                    text: "Category per year"
+                                },
+                                responsive: true,
+                                maintainAspectRatio: true
+                            }
+
+                    });
+                 
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <canvas id="barcanvas" height="450" width="600"></canvas>
+        <canvas id="barcanvas1" height="450" width="600"></canvas>
+        
+
+    </div>
+    
+   
+</body>
+
+
+</html>  

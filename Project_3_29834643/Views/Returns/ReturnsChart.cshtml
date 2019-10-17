@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "ReturnsChart";
+}
+
+<h1>superstore returns analysis</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pie Charts</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js"></script>
+    <script>
+
+            function dynamicColors() {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgba(" + r + "," + g + "," + b + ", 0.5)";
+        }
+        function poolColors(a) {
+    var pool = [];
+    for(i = 0; i < a; i++) {
+        pool.push(dynamicColors());
+    }
+    return pool;
+}
+
+
+
+
+
+        var jsreturns = @Html.Raw( ViewBag.TheReturnTotals);
+        var PieChartData =
+        {
+            labels:@Html.Raw(ViewBag.TheReturnlabels),
+            datasets: [{
+                label: 'returns per region',
+                backgroundColor: poolColors(jsreturns.length),
+                borderWidth: 2,
+                data: jsreturns
+            }]
+        };
+
+        window.onload = function () {
+            var ctx1 = document.getElementById("barcanvas").getContext("2d");
+            window.myBar = new Chart(ctx1,
+                {
+                    type: 'bar',
+                    data: PieChartData,
+                    options:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: "Superstore total number of returns in every region"
+                        },
+                        responsive: true,
+                        maintainAspectRatio: true
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+    <div style="text-align: center">
+        <canvas id="barcanvas"></canvas>
+    </div>
+    <div style="text-align: center">
+
+    </div>
+</body>
+
+</html>  
